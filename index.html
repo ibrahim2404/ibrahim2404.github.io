@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ibrahim Khalil Andoulsi · AI & Software Engineer</title>
+<meta name="description" content="AI engineer building agentic assistants, RAG systems and MLOps pipelines. Portfolio of Ibrahim Khalil Andoulsi.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#edf0f5; --ink:#15213b; --muted:#56627a; --line:#cdd4e0; --accent:#2a4fd6; --panel:#e2e7f0;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#10151f; --ink:#e8ecf4; --muted:#9aa5ba; --line:#263044; --accent:#7f9bff; --panel:#171e2c;}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--ink);font:400 1.0625rem/1.65 "IBM Plex Sans",system-ui,sans-serif}
+a{color:var(--accent);text-underline-offset:3px}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+main{max-width:46rem;margin:0 auto;padding:4rem 1.5rem 5rem}
+h1,h2,h3{font-family:"Instrument Serif",Georgia,serif;font-weight:400;line-height:1.1;margin:0}
+h1{font-size:clamp(3rem,9vw,5rem);letter-spacing:-.02em}
+h2{font-size:2rem;margin-bottom:1.25rem}
+h3{font-size:1.5rem}
+section{margin-top:4.5rem}
+.role{font-size:1.25rem;color:var(--muted);margin:.75rem 0 1.5rem}
+.lead{max-width:36rem;margin:0 0 1.75rem}
+.links{display:flex;flex-wrap:wrap;gap:.75rem 1.5rem;padding:0;margin:0;list-style:none}
+.btn{display:inline-block;background:var(--ink);color:var(--bg);padding:.6rem 1.1rem;border-radius:6px;text-decoration:none;font-weight:500}
+.btn:hover{background:var(--accent);color:#fff}
+.proj{display:grid;grid-template-columns:9rem 1fr;gap:1.5rem;padding:1.75rem 0;border-top:1px solid var(--line)}
+.proj:last-of-type{border-bottom:1px solid var(--line)}
+.metric{font-family:"Instrument Serif",Georgia,serif;font-size:2.75rem;line-height:1;color:var(--accent)}
+.metric small{display:block;font:400 .85rem/1.35 "IBM Plex Sans",sans-serif;color:var(--muted);margin-top:.4rem}
+.proj p{margin:.5rem 0 .75rem}
+.stack{color:var(--muted);font-size:.95rem}
+.tag{font-size:.85rem;color:var(--muted);margin-left:.5rem}
+.job{margin-bottom:1.75rem}
+.job h3{font-size:1.35rem}
+.job .meta{color:var(--muted);font-size:.95rem;margin:.15rem 0 .5rem}
+.job p{margin:0;max-width:40rem}
+dl{margin:0;display:grid;grid-template-columns:11rem 1fr;gap:.6rem 1.5rem}
+dt{font-weight:600}
+dd{margin:0;color:var(--muted)}
+footer{margin-top:5rem;padding-top:1.5rem;border-top:1px solid var(--line);color:var(--muted);font-size:.9rem}
+@media (max-width:600px){
+  .proj,dl{grid-template-columns:1fr;gap:.5rem}
+  .metric{font-size:2.25rem}
+}
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <h1>Ibrahim Khalil Andoulsi</h1>
+  <p class="role">AI &amp; Software Engineer</p>
+  <p class="lead">I build agentic AI assistants, retrieval systems and ML pipelines, and I measure them: every project below comes with the accuracy it reached and how I tested it.</p>
+  <ul class="links">
+    <li><a class="btn" href="mailto:andoulsiibrahimkhalil@gmail.com">Email me</a></li>
+    <li><a href="https://github.com/ibrahim2404">GitHub</a></li>
+    <li><a href="https://www.linkedin.com/in/YOUR-LINKEDIN/">LinkedIn</a></li>
+    <li><a href="cv.pdf">Download CV</a></li>
+  </ul>
+</header>
+
+<section id="work" aria-labelledby="work-h">
+  <h2 id="work-h">Selected work</h2>
+
+  <article class="proj">
+    <div class="metric">100 / 90 / 75%<small>accuracy on navigation, visual creation, and KPI Q&amp;A</small></div>
+    <div>
+      <h3>Agentic assistant inside Power BI <span class="tag">PwC, 2026</span></h3>
+      <p>Directors ask questions, apply filters, switch pages or request new visuals by text or voice. An 11-node LangGraph workflow routes each request, and Azure OpenAI answers are grounded in the active visuals, filters, measures and DAX. Entra ID and MSAL enforce row-level security.</p>
+      <div class="stack">LangGraph · FastAPI · Angular · Power BI Embedded · Azure OpenAI</div>
+    </div>
+  </article>
+
+  <article class="proj">
+    <div class="metric">58% → 92.1%<small>top-3 retrieval accuracy on 100 Ragas questions</small></div>
+    <div>
+      <h3>DocMind <span class="tag">Personal project</span></h3>
+      <p>A document assistant that reads PDF, DOCX, PPTX and XLSX files, and also charts and images through a local vision model. Hybrid search (dense plus BM25) with reranking gives answers cited to the page.</p>
+      <div class="stack">Qdrant · Hybrid retrieval · Reranking · Ragas · Local VLM</div>
+      <p><a href="https://github.com/ibrahim2404">View on GitHub</a></p>
+    </div>
+  </article>
+
+  <article class="proj">
+    <div class="metric">96.2% F1<small>with 96.9% fault recall</small></div>
+    <div>
+      <h3>Industrial anomaly detection <span class="tag">Bi'nergy, 2025</span></h3>
+      <p>End-to-end pipeline on a year of minute-level sensor data. Feature engineering lifted the model from 60% to 92%, and XGBoost reached the final score. Shipped in Docker with CI/CD, Prometheus and Grafana monitoring, and email alerts.</p>
+      <div class="stack">XGBoost · MLflow · Docker · Prometheus · Grafana</div>
+    </div>
+  </article>
+
+  <article class="proj">
+    <div class="metric">89%<small>of generated recipes meet the nutrition constraints</small></div>
+    <div>
+      <h3>NutriGen <span class="tag">Personal project</span></h3>
+      <p>SmolLM2 fine-tuned with QLoRA on 2M+ recipes, wrapped in a governance layer that checks calories, macros and allergens and logs every decision. Runs as Kubernetes microservices with Kafka and Jenkins CI/CD.</p>
+      <div class="stack">QLoRA · Kubernetes · Kafka · Jenkins</div>
+      <p><a href="https://github.com/ibrahim2404">View on GitHub</a></p>
+    </div>
+  </article>
+</section>
+
+<section id="experience" aria-labelledby="exp-h">
+  <h2 id="exp-h">Experience</h2>
+  <div class="job">
+    <h3>AI Engineering Intern, PwC</h3>
+    <div class="meta">Feb – Jul 2026</div>
+    <p>Designed and built the Power BI agentic assistant described above, from the Angular front end to the LangGraph backend.</p>
+  </div>
+  <div class="job">
+    <h3>AI Engineering &amp; MLOps Intern, Bi'nergy</h3>
+    <div class="meta">Jul – Aug 2025</div>
+    <p>Built and deployed the anomaly detection pipeline, with experiment tracking and production monitoring.</p>
+  </div>
+  <div class="job">
+    <h3>AI Software Engineering Intern, OSS</h3>
+    <div class="meta">Jul – Aug 2024</div>
+    <p>Built a full-stack asset and maintenance platform (MERN) with a Random Forest model that prioritizes and routes maintenance tickets.</p>
+  </div>
+</section>
+
+<section id="awards" aria-labelledby="aw-h">
+  <h2 id="aw-h">Awards</h2>
+  <div class="job">
+    <h3>1st place, Green AI Hackathon</h3>
+    <div class="meta">ENSTAB, Dec 2025</div>
+    <p>Agentic AI system that helps households cut their energy use.</p>
+  </div>
+  <div class="job">
+    <h3>4th place, PwC Internal AI Hackathon</h3>
+    <div class="meta">May 2026</div>
+    <p>AI-driven tool to improve team productivity.</p>
+  </div>
+</section>
+
+<section id="skills" aria-labelledby="sk-h">
+  <h2 id="sk-h">Skills</h2>
+  <dl>
+    <dt>AI &amp; ML</dt><dd>Agentic AI, RAG, LLM fine-tuning, LangGraph, HuggingFace, PyTorch, TensorFlow, Scikit-learn, Ragas</dd>
+    <dt>MLOps &amp; cloud</dt><dd>Azure, Docker, Kubernetes, GitHub Actions, Jenkins, Kafka, MLflow, DVC, Prometheus, Grafana</dd>
+    <dt>Development</dt><dd>Python, TypeScript, JavaScript, SQL, C/C++, FastAPI, Angular, React, Next.js</dd>
+    <dt>Data</dt><dd>Qdrant, MongoDB, PostgreSQL, SQL Server, Power BI</dd>
+  </dl>
+</section>
+
+<section id="education" aria-labelledby="ed-h">
+  <h2 id="ed-h">Education</h2>
+  <p>Engineering degree in Advanced Technologies, ENSTAB (2023 – 2026). Preparatory cycle in Mathematics and Physics, IPEIN (2021 – 2023).<br>
+  Languages: Arabic (native), French (fluent), English (B2, TOEIC).</p>
+</section>
+
+<section id="contact" aria-labelledby="ct-h">
+  <h2 id="ct-h">Contact</h2>
+  <p>Open to AI engineering roles and freelance projects in agents, RAG and MLOps.</p>
+  <p><a class="btn" href="mailto:andoulsiibrahimkhalil@gmail.com">andoulsiibrahimkhalil@gmail.com</a></p>
+</section>
+
+<footer>© 2026 Ibrahim Khalil Andoulsi · Tunis, Tunisia</footer>
+</main>
+</body>
+</html>
