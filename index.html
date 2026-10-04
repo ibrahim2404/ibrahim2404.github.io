@@ -65,7 +65,7 @@
         <div class="socials">
           <a href="https://github.com/ibrandos" target="_blank" rel="noopener" aria-label="GitHub"><svg class="ic"><use href="#i-gh"/></svg></a>
           <a href="https://www.linkedin.com/in/ibrahim-khalil-andoulsi-023980300" target="_blank" rel="noopener" aria-label="LinkedIn"><svg class="ic"><use href="#i-in"/></svg></a>
-          <a href="mailto:andoulsiibrahimkhalil@gmail.com" aria-label="Email"><svg class="ic"><use href="#i-mail"/></svg></a>
+          <a href="mailto:andoulsiibrahimkhalil@gmail.com" data-mail aria-label="Email"><svg class="ic"><use href="#i-mail"/></svg></a>
         </div>
       </div>
     </div>
@@ -287,9 +287,9 @@
       <span class="label reveal" data-i18n="contact.label">Contact</span>
       <h2 class="contact-title reveal" data-i18n="contact.title">Let's build something <span class="grad">intelligent.</span></h2>
       <p class="reveal" data-i18n="contact.p">Open to AI Engineering roles and collaborations. The fastest way to reach me is by email.</p>
-      <a href="mailto:andoulsiibrahimkhalil@gmail.com" class="email-big reveal">andoulsiibrahimkhalil@gmail.com</a>
+      <a href="mailto:andoulsiibrahimkhalil@gmail.com" data-mail class="email-big reveal">andoulsiibrahimkhalil@gmail.com</a>
       <div class="contact-actions reveal">
-        <button class="btn btn-primary" id="copyEmail"><svg class="ic"><use href="#i-mail"/></svg><span data-i18n="contact.copy">Copy email</span></button>
+        <button class="btn btn-primary" data-mail><svg class="ic"><use href="#i-mail"/></svg><span data-i18n="contact.email">Email me</span></button>
         <a href="https://www.linkedin.com/in/ibrahim-khalil-andoulsi-023980300" target="_blank" rel="noopener" class="btn btn-ghost"><svg class="ic"><use href="#i-in"/></svg>LinkedIn</a>
         <a href="https://github.com/ibrandos" target="_blank" rel="noopener" class="btn btn-ghost"><svg class="ic"><use href="#i-gh"/></svg>GitHub</a>
         <a href="cv.pdf" download="CV_Ibrahim_Khalil_Andoulsi.pdf" class="btn btn-ghost"><svg class="ic"><use href="#i-dl"/></svg><span data-i18n="hero.cv">Download CV</span></a>
@@ -305,7 +305,19 @@
     <span data-i18n="footer.built">Designed &amp; built with care · aiandoulsisolutions.me</span>
   </div>
 </footer>
-
+<div class="mail-modal" id="mailModal" aria-hidden="true">
+  <div class="mail-box" role="dialog" aria-modal="true" aria-labelledby="mailTitle">
+    <button class="mail-close" id="mailClose" aria-label="Close">&times;</button>
+    <h3 id="mailTitle" data-i18n="mail.title">How would you like to reach me?</h3>
+    <p class="mail-addr">andoulsiibrahimkhalil@gmail.com</p>
+    <div class="mail-opts">
+      <a id="mGmail" class="mail-opt" target="_blank" rel="noopener">Gmail</a>
+      <a id="mOutlook" class="mail-opt" target="_blank" rel="noopener">Outlook</a>
+      <a id="mDefault" class="mail-opt" data-i18n="mail.default">Default mail app</a>
+      <button id="mCopy" class="mail-opt" data-i18n="mail.copy">Copy address</button>
+    </div>
+  </div>
+</div>
 <script src="main.js"></script>
 </body>
 </html>
