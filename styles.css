@@ -232,3 +232,15 @@ footer{padding:2rem 0;border-top:1px solid var(--line);color:var(--muted);font-s
   html{scroll-behavior:auto}
   .reveal{opacity:1;transform:none}
 }
+/* Email modal */
+.mail-modal{position:fixed;inset:0;z-index:300;display:grid;place-items:center;padding:1rem;background:rgba(3,5,10,.7);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);opacity:0;visibility:hidden;transition:opacity .3s,visibility .3s}
+.mail-modal.open{opacity:1;visibility:visible}
+.mail-box{position:relative;width:min(420px,100%);padding:2rem;border:1px solid var(--line);border-radius:var(--r);background:var(--bg-2);box-shadow:0 30px 80px -20px rgba(139,92,246,.45);transform:translateY(16px) scale(.98);transition:transform .35s var(--ease)}
+.mail-modal.open .mail-box{transform:none}
+.mail-box h3{margin-bottom:.3rem;font-size:1.25rem;letter-spacing:-.02em;padding-right:1.5rem}
+.mail-addr{margin-bottom:1.5rem;font-family:var(--mono);font-size:.82rem;color:var(--cyan);word-break:break-all}
+.mail-opts{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
+.mail-opt{display:flex;align-items:center;justify-content:center;padding:.9rem;border:1px solid var(--line);border-radius:12px;background:var(--card);color:var(--text);font:600 .9rem 'Inter',sans-serif;text-align:center;cursor:pointer;transition:border-color .25s,color .25s}
+.mail-opt:hover{border-color:var(--cyan);color:var(--cyan)}
+.mail-close{position:absolute;top:.8rem;right:1rem;border:0;background:none;color:var(--muted);font-size:1.6rem;line-height:1;cursor:pointer}
+.mail-close:hover{color:var(--text)}
