@@ -1,6 +1,6 @@
 (() => {
   /* ===== CONFIG — paste the direct LinkedIn post URL of the PwC demo here ===== */
-  const DEMO_URL = 'https://www.linkedin.com/in/ibrahim-khalil-andoulsi-023980300/recent-activity/all/';
+  const DEMO_URL = 'https://lnkd.in/p/dnNG8J2n';
   const EMAIL = 'andoulsiibrahimkhalil@gmail.com';
 
   const $ = (s, c = document) => c.querySelector(s);
