@@ -6,7 +6,7 @@
      ========================================================= */
   const CV_URL = 'CV_Ibrahim_Khalil_Andoulsi.pdf';
   // Paste the direct LinkedIn post URL of the PwC demo here:
-  const DEMO_URL = 'https://lnkd.in/p/dnNG8J2n';
+  const DEMO_URL = 'https://www.linkedin.com/in/ibrahim-khalil-andoulsi-023980300/recent-activity/all/';
   const GITHUB_URL = 'https://github.com/ibrandos';
   const EMAIL = 'andoulsiibrahimkhalil@gmail.com';
   const PDFJS = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/';
@@ -630,26 +630,26 @@
     else if (p.cat === 'personal') actions += `<span class="soon">${ui('soon')}</span>`;
 
     let h = `<article class="detail">
-      <header class="d-head d-reveal">
+      <header class="d-head d-reveal" data-k="top">
         <div class="p-top"><span class="p-tag">${tx(p.type)}</span>${p.featured ? `<span class="badge-f">${ui('featured')}</span>` : ''}</div>
         <h2 class="d-title">${tx(p.title)}</h2>
         <p class="d-meta">${tx(p.meta)}</p>
         <div class="d-actions">${actions}</div>
       </header>`;
 
-    h += sec(ui('overview'), `<div class="d-overview">${tx(p.overview).map(x => `<p>${x}</p>`).join('')}</div>`);
+    h += sec(ui('overview'), `<div class="d-overview">${tx(p.overview).map(x => `<p>${x}</p>`).join('')}</div>`, ' data-k="overview"');
 
     if (p.challenge) {
-      h += `<section class="d-sec d-grid2">
+      h += `<section class="d-sec d-grid2" data-k="challenge">
         <div class="card d-reveal"><span class="card-n">01</span><h4>${ui('challenge')}</h4><p>${tx(p.challenge)}</p></div>
         <div class="card d-reveal" style="--d:.12s"><span class="card-n">02</span><h4>${ui('approach')}</h4><p>${tx(p.approach)}</p></div>
       </section>`;
     }
-    if (p.features) h += sec(ui('built'), `<ul class="d-list">${tx(p.features).map(f => `<li>${f}</li>`).join('')}</ul>`);
-    if (p.arch) h += sec(ui('arch'), archHTML(p.arch));
-    if (p.stats || p.bars) h += sec(ui('results'), metricsHTML(p));
+    if (p.features) h += sec(ui('built'), `<ul class="d-list">${tx(p.features).map(f => `<li>${f}</li>`).join('')}</ul>`, ' data-k="built"');
+    if (p.arch) h += sec(ui('arch'), archHTML(p.arch), ' data-k="architecture"');
+    if (p.stats || p.bars) h += sec(ui('results'), metricsHTML(p), ' data-k="results"');
     if (p.writeup) h += `<p class="d-note d-reveal">${ui('writeup')}</p>`;
-    h += sec(ui('stack'), `<div class="chips">${p.stack.map(s => `<span>${s}</span>`).join('')}</div>`);
+    h += sec(ui('stack'), `<div class="chips">${p.stack.map(s => `<span>${s}</span>`).join('')}</div>`, ' data-k="stack"');
 
     h += `<nav class="d-nav d-reveal">
         <button class="d-nav-btn" data-goto="${prev.id}"><small>← ${ui('prev')}</small><b>${tx(prev.title)}</b></button>
@@ -842,6 +842,7 @@
     if (err) err.innerHTML = `<p>${ui('cvError')}</p><a class="btn btn-primary" href="${CV_URL}" target="_blank" rel="noopener">${ui('cvOpen')}</a>`;
     restartTyping();
     onScroll();
+    window.dispatchEvent(new CustomEvent('portfolio:lang', { detail: l }));
   }
   $('#langBtn').addEventListener('click', () => setLang(lang === 'en' ? 'fr' : 'en'));
 
@@ -911,7 +912,7 @@
      ========================================================= */
   const mailModal = $('#mailModal');
   function openMail(e) {
-    e.preventDefault();
+    if (e) e.preventDefault();
     const s = encodeURIComponent(SUBJECT[lang]);
     $('#mGmail').href = `https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL}&su=${s}`;
     $('#mOutlook').href = `https://outlook.live.com/mail/0/deeplink/compose?to=${EMAIL}&subject=${s}`;
@@ -938,10 +939,59 @@
 
   addEventListener('keydown', e => {
     if (e.key !== 'Escape') return;
+    if (document.documentElement.classList.contains('chat-open') && !mailModal.classList.contains('open')) return;
     if (mailModal.classList.contains('open')) closeMail();
     else if (pSheet.classList.contains('open') || cvSheet.classList.contains('open')) closeOverlay();
     else nav.classList.remove('open');
   });
+
+  /* =========================================================
+     Public API for the AI assistant (chat.js)
+     ========================================================= */
+  function flash(el) {
+    if (!el) return;
+    el.classList.remove('ai-hl');
+    void el.offsetWidth;
+    el.classList.add('ai-hl');
+    setTimeout(() => el.classList.remove('ai-hl'), 3200);
+  }
+  window.Portfolio = {
+    lang: () => lang,
+    projectTitle: id => { const p = PROJECTS.find(x => x.id === id); return p ? tx(p.title) : id; },
+    projectIds: PROJECTS.map(p => p.id),
+    links: { linkedin: 'https://www.linkedin.com/in/ibrahim-khalil-andoulsi-023980300', github: GITHUB_URL, demo: DEMO_URL },
+    openProject(id, focus) {
+      if (!PROJECTS.some(p => p.id === id)) return false;
+      const already = currentProject === id && pSheet.classList.contains('open');
+      if (!already) go('#project-' + id);
+      setTimeout(() => {
+        const el = $(`[data-k="${focus || 'top'}"]`, pBody) || $('[data-k="top"]', pBody);
+        if (!el) return;
+        el.classList.add('in');
+        $$('[data-count]', el).forEach(count);
+        $$('.bar', el).forEach(b => b.classList.add('in'));
+        const top = el.getBoundingClientRect().top - pBody.getBoundingClientRect().top + pBody.scrollTop - 24;
+        pBody.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+        flash(el);
+      }, already ? 50 : 650);
+      return true;
+    },
+    scrollTo(id) {
+      const sec = document.getElementById(id);
+      if (!sec) return false;
+      const doScroll = () => {
+        sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        $$('.reveal, .stagger, .tl-item', sec).forEach(el => el.classList.add('in'));
+        setTimeout(() => flash($('.container', sec) || sec), 450);
+      };
+      if (pSheet.classList.contains('open') || cvSheet.classList.contains('open')) { closeOverlay(); setTimeout(doScroll, 450); }
+      else doScroll();
+      return true;
+    },
+    openCV() { go('#cv'); },
+    openMail() { openMail(); }
+  };
+  window.dispatchEvent(new Event('portfolio:ready'));
 
   /* =========================================================
      Hero agent graph — same behaviour on mouse and touch
