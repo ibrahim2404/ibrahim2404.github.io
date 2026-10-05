@@ -88,6 +88,10 @@
     'contact.title': `Construisons quelque chose d'<span class="grad">intelligent.</span>`,
     'contact.p': `Ouvert aux postes en ingénierie IA et aux collaborations. Le plus rapide pour me joindre reste l'e-mail.`,
     'contact.copy': `Copier l'e-mail`,
+    'contact.email': `M'écrire`,
+    'mail.title': `Comment souhaitez-vous me contacter ?`,
+    'mail.default': `Application mail par défaut`,
+    'mail.copy': `Copier l'adresse`,
     'footer.built': `Conçu &amp; développé avec soin · aiandoulsisolutions.me`
   };
   const WORDS = {
@@ -203,14 +207,34 @@
     c.style.setProperty('--my', `${e.clientY - r.top}px`);
   }));
 
-  /* ===== Copy email ===== */
-  $('#copyEmail').addEventListener('click', async e => {
-    const span = $('span', e.currentTarget);
+  /* ===== Email chooser ===== */
+  const SUBJECT = { en: 'Opportunity — via your portfolio', fr: 'Opportunité — via votre portfolio' };
+  const mailModal = $('#mailModal');
+  function openMail(e) {
+    e.preventDefault();
+    const s = encodeURIComponent(SUBJECT[lang]);
+    $('#mGmail').href = `https://mail.google.com/mail/?view=cm&fs=1&to=${EMAIL}&su=${s}`;
+    $('#mOutlook').href = `https://outlook.live.com/mail/0/deeplink/compose?to=${EMAIL}&subject=${s}`;
+    $('#mDefault').href = `mailto:${EMAIL}?subject=${s}`;
+    mailModal.classList.add('open');
+    mailModal.setAttribute('aria-hidden', 'false');
+  }
+  function closeMail() {
+    mailModal.classList.remove('open');
+    mailModal.setAttribute('aria-hidden', 'true');
+  }
+  $$('[data-mail]').forEach(el => el.addEventListener('click', openMail));
+  $('#mailClose').addEventListener('click', closeMail);
+  mailModal.addEventListener('click', e => { if (e.target === mailModal) closeMail(); });
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeMail(); });
+  $$('.mail-opts a').forEach(a => a.addEventListener('click', () => setTimeout(closeMail, 300)));
+  $('#mCopy').addEventListener('click', async e => {
+    const b = e.currentTarget;
     try {
       await navigator.clipboard.writeText(EMAIL);
-      span.textContent = COPIED[lang];
-      setTimeout(() => { span.innerHTML = (lang === 'fr' ? FR : EN)['contact.copy']; }, 1800);
-    } catch { location.href = 'mailto:' + EMAIL; }
+      b.textContent = COPIED[lang];
+      setTimeout(() => { b.innerHTML = (lang === 'fr' ? FR : EN)['mail.copy']; }, 1800);
+    } catch { b.textContent = EMAIL; }
   });
 
   /* ===== Hero agent graph ===== */
