@@ -2,9 +2,10 @@
   'use strict';
 
   /* =========================================================
-     CONFIG
+     CONFIG — edit these lines only
      ========================================================= */
   const CV_URL = 'CV_Ibrahim_Khalil_Andoulsi.pdf';
+  // Paste the direct LinkedIn post URL of the PwC demo here:
   const DEMO_URL = 'https://lnkd.in/p/dnNG8J2n';
   const GITHUB_URL = 'https://github.com/ibrandos';
   const EMAIL = 'andoulsiibrahimkhalil@gmail.com';
@@ -18,7 +19,7 @@
   $('#year').textContent = new Date().getFullYear();
 
   /* =========================================================
-     PROJECTS (EN + FR)
+     PROJECTS — all case-study content lives here (EN + FR)
      ========================================================= */
   const PROJECTS = [
     {
@@ -946,6 +947,20 @@
      Hero agent graph — same behaviour on mouse and touch
      ========================================================= */
   const hero = $('#hero'), canvas = $('#graph'), ctx = canvas.getContext('2d');
+  let GC = {};
+  function readGraphColors() {
+    const light = document.documentElement.dataset.theme === 'light';
+    const a = getComputedStyle(document.documentElement).getPropertyValue('--accent-rgb').trim() || '200,169,107';
+    GC = {
+      a,
+      line: light ? .30 : .22,
+      glow: light ? .08 : .06,
+      dot: light ? 'rgba(22,21,26,.28)' : 'rgba(242,240,234,.32)',
+      pulse: `rgba(${a},.95)`,
+      near: `rgba(${a},.95)`
+    };
+  }
+  readGraphColors();
   let W = 0, H = 0, pts = [], pulses = [], LINK = 140, running = true;
   const focus = { x: -9999, y: -9999 };
   let pointerActive = false, releaseTimer, ghostT = Math.random() * 100;
@@ -975,8 +990,8 @@
     ctx.clearRect(0, 0, W, H);
 
     const g = ctx.createRadialGradient(focus.x, focus.y, 0, focus.x, focus.y, 200);
-    g.addColorStop(0, 'rgba(34,211,238,.07)');
-    g.addColorStop(1, 'rgba(34,211,238,0)');
+    g.addColorStop(0, `rgba(${GC.a},${GC.glow})`);
+    g.addColorStop(1, `rgba(${GC.a},0)`);
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, H);
 
@@ -996,7 +1011,7 @@
       for (let j = i + 1; j < pts.length; j++) {
         const a = pts[i], b = pts[j], d = Math.hypot(a.x - b.x, a.y - b.y);
         if (d < LINK) {
-          ctx.strokeStyle = `rgba(139,92,246,${(1 - d / LINK) * .38})`;
+          ctx.strokeStyle = `rgba(${GC.a},${(1 - d / LINK) * GC.line})`;
           ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
           edges.push([a, b]);
         }
@@ -1008,7 +1023,7 @@
       pulses.push({ a, b, t: 0 });
     }
     pulses = pulses.filter(p => p.t <= 1);
-    ctx.shadowColor = '#22d3ee'; ctx.shadowBlur = 12; ctx.fillStyle = 'rgba(34,211,238,.95)';
+    ctx.shadowColor = GC.pulse; ctx.shadowBlur = 10; ctx.fillStyle = GC.pulse;
     for (const p of pulses) {
       p.t += .02;
       ctx.beginPath();
@@ -1019,7 +1034,7 @@
 
     for (const p of pts) {
       const near = Math.hypot(focus.x - p.x, focus.y - p.y) < 170;
-      ctx.fillStyle = near ? 'rgba(34,211,238,.95)' : 'rgba(200,210,255,.5)';
+      ctx.fillStyle = near ? GC.near : GC.dot;
       ctx.beginPath(); ctx.arc(p.x, p.y, p.r + (near ? 1 : 0), 0, Math.PI * 2); ctx.fill();
     }
   }
@@ -1064,6 +1079,30 @@
     if (running && !was) requestAnimationFrame(loop);
   }).observe(hero);
   requestAnimationFrame(loop);
+
+  /* =========================================================
+     Theme — follows the device by default, manual toggle wins
+     ========================================================= */
+  const root = document.documentElement;
+  const metaTheme = $('meta[name="theme-color"]');
+  const sysLight = matchMedia('(prefers-color-scheme: light)');
+  function applyTheme(t, save) {
+    root.setAttribute('data-theme', t);
+    if (metaTheme) metaTheme.setAttribute('content', t === 'light' ? '#F6F3EC' : '#0B0B0C');
+    if (save) { try { localStorage.setItem('theme', t); } catch (e) { /* storage blocked */ } }
+    readGraphColors();
+  }
+  $('#themeBtn').addEventListener('click', () => {
+    applyTheme(root.dataset.theme === 'light' ? 'dark' : 'light', true);
+  });
+  const onSys = e => {
+    let saved = null;
+    try { saved = localStorage.getItem('theme'); } catch (err) { /* ignore */ }
+    if (saved !== 'light' && saved !== 'dark') applyTheme(e.matches ? 'light' : 'dark', false);
+  };
+  if (sysLight.addEventListener) sysLight.addEventListener('change', onSys);
+  else if (sysLight.addListener) sysLight.addListener(onSys);
+  applyTheme(root.dataset.theme === 'light' ? 'light' : 'dark', false);
 
   /* =========================================================
      Init
