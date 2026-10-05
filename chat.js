@@ -28,7 +28,18 @@
       errRate: 'You\'re sending messages a bit fast — give me a few seconds and try again.',
       errBusy: 'I\'m at capacity right now. You can still reach Ibrahim directly:',
       errNet: 'I couldn\'t reach the server. Please try again in a moment, or contact Ibrahim directly:',
-      limit: 'This conversation is getting long — start a new one to keep answers sharp.'
+      limit: 'This conversation is getting long — start a new one to keep answers sharp.',
+      teasers: {
+        hero: 'Hi, I\'m Ibrahim\'s AI assistant. Ask me anything about him.',
+        about: 'Want the 30-second summary of his profile?',
+        projects: 'Not sure where to start? I\'ll walk you through any project.',
+        experience: 'Ask me what he actually built at PwC.',
+        skills: 'Wondering if he fits your stack? Ask me.',
+        education: 'Questions about his background? Just ask.',
+        contact: 'Prefer to ask a quick question first? I\'m here.',
+        project: 'Questions about “{p}”? Ask me, I\'ll show you the details.'
+      },
+      dismiss: 'Dismiss'
     },
     fr: {
       launch: 'Demander à mon IA', nudge: 'Revenir au chat',
@@ -45,7 +56,18 @@
       errRate: 'Vous envoyez des messages un peu vite — patientez quelques secondes et réessayez.',
       errBusy: 'Je suis saturé pour le moment. Vous pouvez contacter Ibrahim directement :',
       errNet: 'Impossible de joindre le serveur. Réessayez dans un instant, ou contactez Ibrahim directement :',
-      limit: 'La conversation devient longue — démarrez-en une nouvelle pour garder des réponses précises.'
+      limit: 'La conversation devient longue — démarrez-en une nouvelle pour garder des réponses précises.',
+      teasers: {
+        hero: 'Bonjour, je suis l\'assistant IA d\'Ibrahim. Posez-moi vos questions sur lui.',
+        about: 'Envie du résumé de son profil en 30 secondes ?',
+        projects: 'Par où commencer ? Je vous présente n\'importe quel projet.',
+        experience: 'Demandez-moi ce qu\'il a réellement construit chez PwC.',
+        skills: 'Correspond-il à votre stack ? Demandez-moi.',
+        education: 'Des questions sur son parcours ? Demandez.',
+        contact: 'Une question rapide avant de le contacter ? Je suis là.',
+        project: 'Des questions sur « {p} » ? Demandez-moi, je vous montre les détails.'
+      },
+      dismiss: 'Fermer'
     }
   };
 
@@ -286,6 +308,7 @@
 
   /* ---------- Open / close ---------- */
   function open() {
+    stopAttention();
     launch.classList.remove('nudge');
     panel.classList.add('open');
     launch.classList.add('hidden');
@@ -294,6 +317,71 @@
     if (!body.children.length) welcome();
     if (!isPhone()) setTimeout(() => input.focus(), 250);
   }
+  /* ---------- Attention: shimmer every ~5 s + contextual teaser ---------- */
+  let opened = false, teaserOff = false, tick = 0, attTimer = null, hideTimer = null;
+  try { opened = sessionStorage.getItem('aiOpened') === '1'; teaserOff = sessionStorage.getItem('aiTeaserOff') === '1'; } catch (e) { /* ignore */ }
+
+  const teaser = document.createElement('div');
+  teaser.className = 'ai-teaser';
+  teaser.innerHTML = '<span class="ai-teaser-text"></span><button type="button" class="ai-teaser-x">' + ICON.close + '</button>';
+  document.body.appendChild(teaser);
+  teaser.querySelector('.ai-teaser-text').addEventListener('click', open);
+  teaser.querySelector('.ai-teaser-x').addEventListener('click', e => {
+    e.stopPropagation();
+    teaserOff = true;
+    try { sessionStorage.setItem('aiTeaserOff', '1'); } catch (err) { /* ignore */ }
+    hideTeaser();
+  });
+
+  function currentContext() {
+    const sheet = document.getElementById('projectSheet');
+    if (sheet && sheet.classList.contains('open')) {
+      const m = location.hash.match(/^#project-([\w-]+)$/);
+      if (m) return { key: 'project', p: P().projectTitle(m[1]) };
+    }
+    if (document.getElementById('cvSheet')?.classList.contains('open')) return null;
+    const ids = ['hero', 'about', 'projects', 'experience', 'skills', 'education', 'contact'];
+    let cur = 'hero';
+    for (const id of ids) {
+      const el = document.getElementById(id);
+      if (el && el.getBoundingClientRect().top < innerHeight * .5) cur = id;
+    }
+    return { key: cur };
+  }
+  function showTeaser() {
+    const ctx = currentContext();
+    if (!ctx) return;
+    let text = t('teasers')[ctx.key] || t('teasers').hero;
+    text = text.replace('{p}', ctx.p || '');
+    teaser.querySelector('.ai-teaser-text').textContent = text;
+    teaser.querySelector('.ai-teaser-x').ariaLabel = t('dismiss');
+    teaser.classList.add('show');
+    clearTimeout(hideTimer);
+    hideTimer = setTimeout(hideTeaser, 4800);
+  }
+  function hideTeaser() { teaser.classList.remove('show'); }
+  function shimmer() {
+    launch.classList.remove('attn');
+    void launch.offsetWidth;
+    launch.classList.add('attn');
+  }
+  function attention() {
+    if (opened || panel.classList.contains('open') || document.hidden) return;
+    if (document.querySelector('.mail-modal.open')) return;
+    tick++;
+    shimmer();
+    // Teaser every other beat (~10 s), only once the visitor has had time to look around
+    if (!teaserOff && tick % 2 === 0) showTeaser();
+  }
+  setTimeout(() => { attention(); attTimer = setInterval(attention, 5000); }, 4000);
+  function stopAttention() {
+    opened = true;
+    try { sessionStorage.setItem('aiOpened', '1'); } catch (e) { /* ignore */ }
+    clearInterval(attTimer);
+    hideTeaser();
+    launch.classList.remove('attn');
+  }
+
   function close() {
     panel.classList.remove('open');
     launch.classList.remove('hidden');

@@ -133,6 +133,7 @@ section{padding:clamp(80px,12vw,140px) 0;position:relative}
 .term-bar i{width:10px;height:10px;border-radius:50%;background:var(--line);border:1px solid rgba(var(--accent-rgb),.35)}
 .term-bar span{margin-left:auto;font-family:var(--mono);font-size:.75rem;color:var(--muted)}
 .terminal pre{padding:1.4rem 1.5rem;overflow-x:auto;font-family:var(--mono);font-size:.84rem;line-height:1.85;color:var(--term)}
+.terminal pre{tab-size:4;-moz-tab-size:4}
 .k{color:var(--syn-k)}.f{color:var(--syn-f)}.s{color:var(--syn-s)}.c{color:var(--syn-c);font-style:italic}
 
 /* ---------- Cards (shared) ---------- */
@@ -330,6 +331,7 @@ footer{padding:2rem 0 calc(2rem + env(safe-area-inset-bottom));border-top:1px so
   .link{flex:0 0 26px;width:2px;height:26px;background:repeating-linear-gradient(180deg,var(--accent) 0 6px,transparent 6px 12px);background-size:2px 24px;animation-name:flowv}
 }
 @media (max-width:640px){
+  .terminal pre{tab-size:2;-moz-tab-size:2;padding:1.2rem 1rem;font-size:min(.84rem,calc((90vw - 34px) / 26.5));white-space:pre-wrap;overflow-wrap:anywhere}
   .projects-grid,.skills-grid,.d-grid2,.d-nav{grid-template-columns:1fr}
   .d-nav-btn.next{text-align:left}
   .hero-cta .btn{flex:1 1 auto;justify-content:center}
