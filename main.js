@@ -335,6 +335,113 @@
       stack: ['LangChain', 'Python', 'FastAPI', 'React', 'Human-in-the-loop', 'Time series', 'IoT']
     },
     {
+      id: 'navassist', cat: 'personal', demoUrl: 'https://lnkd.in/p/dZPsuj6A', repo: 'https://github.com/ibrandos/navigation-assistant',
+      type: { en: 'Personal project · Computer Vision', fr: 'Projet personnel · Vision par ordinateur' },
+      title: { en: 'NavAssist', fr: 'NavAssist' },
+      meta: { en: 'Personal project · Navigation assistant for the visually impaired', fr: 'Projet personnel · Assistant de navigation pour malvoyants' },
+      brief: {
+        en: 'A real-time navigation assistant that detects obstacles and tells a visually impaired user where they are — trained on a custom dataset and deployed on a Jetson Nano.',
+        fr: 'Un assistant de navigation en temps réel qui détecte les obstacles et indique à une personne malvoyante où ils se trouvent — entraîné sur un dataset maison et déployé sur Jetson Nano.'
+      },
+      overview: {
+        en: [
+          'Moving safely through an unfamiliar space is hard without sight. NavAssist watches the scene through a camera, detects the objects around the user and announces them by voice, with their position: left, center or right.',
+          'The project covers the full computer vision pipeline — from collecting and annotating a custom dataset to training lightweight detectors and running them in real time on an embedded device.'
+        ],
+        fr: [
+          'Se déplacer en sécurité dans un lieu inconnu est difficile sans la vue. NavAssist observe la scène à travers une caméra, détecte les objets autour de l\'utilisateur et les annonce à la voix, avec leur position : gauche, centre ou droite.',
+          'Le projet couvre toute la chaîne de vision par ordinateur — de la collecte et l\'annotation d\'un dataset maison à l\'entraînement de détecteurs légers, jusqu\'à leur exécution en temps réel sur un système embarqué.'
+        ]
+      },
+      challenge: {
+        en: 'Detection has to be accurate and fast enough to guide someone in real time, on a small, low-power device rather than a GPU workstation.',
+        fr: 'La détection doit être assez précise et rapide pour guider quelqu\'un en temps réel, sur un petit appareil basse consommation plutôt que sur une station GPU.'
+      },
+      approach: {
+        en: 'Train lightweight detectors (YOLOv8n, EfficientDet-Lite0) on a custom annotated dataset, compare them through a dedicated evaluation interface, then optimize the model with TensorRT for the Jetson Nano.',
+        fr: 'Entraîner des détecteurs légers (YOLOv8n, EfficientDet-Lite0) sur un dataset annoté maison, les comparer via une interface d\'évaluation dédiée, puis optimiser le modèle avec TensorRT pour le Jetson Nano.'
+      },
+      features: {
+        en: [
+          'Custom annotated dataset, with a complete pipeline from collection and annotation to training and evaluation.',
+          'Lightweight object detection models: YOLOv8n and EfficientDet-Lite0.',
+          'PyQt interface for real-time inference visualization and performance evaluation.',
+          'Spatial awareness: the frame is split into left, center and right zones, announced by voice.',
+          'Deployment on Jetson Nano with TensorRT for accelerated inference with minimal accuracy loss.'
+        ],
+        fr: [
+          'Dataset annoté maison, avec une chaîne complète de la collecte et l\'annotation jusqu\'à l\'entraînement et l\'évaluation.',
+          'Modèles de détection d\'objets légers : YOLOv8n et EfficientDet-Lite0.',
+          'Interface PyQt pour visualiser l\'inférence en temps réel et évaluer les performances.',
+          'Conscience spatiale : l\'image est divisée en zones gauche, centre et droite, annoncées à la voix.',
+          'Déploiement sur Jetson Nano avec TensorRT pour une inférence accélérée avec une perte de précision minimale.'
+        ]
+      },
+      arch: {
+        nodes: [
+          { t: { en: 'Custom dataset', fr: 'Dataset maison' }, s: { en: 'Collection & annotation', fr: 'Collecte & annotation' } },
+          { t: 'YOLOv8n · EfficientDet-Lite0', s: { en: 'Training & evaluation', fr: 'Entraînement & évaluation' }, hl: true },
+          { t: 'TensorRT', s: { en: 'Optimized inference', fr: 'Inférence optimisée' } },
+          { t: 'Jetson Nano', s: { en: 'Real-time detection + voice', fr: 'Détection temps réel + voix' } }
+        ],
+        note: { en: 'PyQt interface for live visualization and model comparison', fr: 'Interface PyQt pour la visualisation en direct et la comparaison des modèles' }
+      },
+      stack: ['Python', 'YOLOv8', 'EfficientDet-Lite0', 'TensorRT', 'Jetson Nano', 'PyQt', 'OpenCV']
+    },
+    {
+      id: 'signtranslate', cat: 'personal', repo: 'https://github.com/ibrandos/Real-time-sign-language-detection',
+      type: { en: 'Personal project · Computer Vision', fr: 'Projet personnel · Vision par ordinateur' },
+      title: { en: 'SignTranslate', fr: 'SignTranslate' },
+      meta: { en: 'Personal project · Real-time Tunisian Sign Language translation', fr: 'Projet personnel · Traduction en temps réel de la langue des signes tunisienne' },
+      brief: {
+        en: 'A real-time system that recognizes Tunisian Sign Language gestures from a camera and translates them — built on a dataset created from scratch.',
+        fr: 'Un système en temps réel qui reconnaît les gestes de la langue des signes tunisienne à partir d\'une caméra et les traduit — construit sur un dataset créé de zéro.'
+      },
+      overview: {
+        en: [
+          'Tunisian Sign Language has very little public data, which makes it hard to build tools for it. SignTranslate recognizes signs from a webcam in real time and turns them into text.',
+          'Since no suitable dataset existed, the project starts by building one, then trains a deep learning model on it and runs it live.'
+        ],
+        fr: [
+          'La langue des signes tunisienne dispose de très peu de données publiques, ce qui rend difficile la création d\'outils. SignTranslate reconnaît les signes depuis une webcam en temps réel et les transforme en texte.',
+          'Aucun dataset adapté n\'existant, le projet commence par en construire un, puis entraîne un modèle de deep learning dessus et l\'exécute en direct.'
+        ]
+      },
+      challenge: {
+        en: 'No ready-made dataset for Tunisian Sign Language, and recognition has to stay accurate and fast on a live video stream.',
+        fr: 'Pas de dataset prêt à l\'emploi pour la langue des signes tunisienne, et la reconnaissance doit rester précise et rapide sur un flux vidéo en direct.'
+      },
+      approach: {
+        en: 'Collect a dedicated dataset, extract hand landmarks with MediaPipe, enrich the data with augmentation, and train a neural network classifier used in real time.',
+        fr: 'Collecter un dataset dédié, extraire les points clés de la main avec MediaPipe, enrichir les données par augmentation, et entraîner un classifieur à réseau de neurones utilisé en temps réel.'
+      },
+      features: {
+        en: [
+          'Dataset on Tunisian Sign Language built from scratch with OpenCV.',
+          'Hand landmark extraction with MediaPipe.',
+          'Data augmentation to improve the model\'s performance.',
+          'Deep learning gesture classifier trained with TensorFlow / Keras.',
+          'Real-time recognition and translation from a webcam stream.'
+        ],
+        fr: [
+          'Dataset sur la langue des signes tunisienne construit de zéro avec OpenCV.',
+          'Extraction des points clés de la main avec MediaPipe.',
+          'Augmentation de données pour améliorer les performances du modèle.',
+          'Classifieur de gestes en deep learning entraîné avec TensorFlow / Keras.',
+          'Reconnaissance et traduction en temps réel à partir du flux webcam.'
+        ]
+      },
+      arch: {
+        nodes: [
+          { t: { en: 'Data collection', fr: 'Collecte de données' }, s: { en: 'Webcam · OpenCV', fr: 'Webcam · OpenCV' } },
+          { t: 'MediaPipe', s: { en: 'Hand landmarks', fr: 'Points clés de la main' } },
+          { t: 'TensorFlow / Keras', s: { en: 'Gesture classifier + augmentation', fr: 'Classifieur de gestes + augmentation' }, hl: true },
+          { t: { en: 'Real-time translation', fr: 'Traduction en temps réel' }, s: { en: 'Live webcam stream', fr: 'Flux webcam en direct' } }
+        ]
+      },
+      stack: ['Python', 'OpenCV', 'MediaPipe', 'TensorFlow', 'Keras', 'Data augmentation']
+    },
+    {
       id: 'oss', cat: 'pro',
       type: { en: 'Professional · Full-stack + ML', fr: 'Professionnel · Full-stack + ML' },
       title: { en: 'Asset & Maintenance Platform', fr: 'Plateforme actifs & maintenance' },
@@ -625,7 +732,7 @@
     const next = PROJECTS[(idx + 1) % PROJECTS.length];
 
     let actions = '';
-    if (p.demo) actions += `<a class="btn btn-primary" href="${DEMO_URL}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-play"/></svg>${ui('demo')}</a>`;
+    if (p.demo || p.demoUrl) actions += `<a class="btn btn-primary" href="${p.demoUrl || DEMO_URL}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-play"/></svg>${ui('demo')}</a>`;
     if (p.repo) actions += `<a class="btn btn-ghost" href="${p.repo}" target="_blank" rel="noopener"><svg class="ic"><use href="#i-gh"/></svg>GitHub</a>`;
     else if (p.cat === 'personal') actions += `<span class="soon">${ui('soon')}</span>`;
 
@@ -959,7 +1066,7 @@
     lang: () => lang,
     projectTitle: id => { const p = PROJECTS.find(x => x.id === id); return p ? tx(p.title) : id; },
     projectIds: PROJECTS.map(p => p.id),
-    links: { linkedin: 'https://www.linkedin.com/in/ibrahim-khalil-andoulsi-023980300', github: GITHUB_URL, demo: DEMO_URL },
+    links: { linkedin: 'https://www.linkedin.com/in/ibrahim-khalil-andoulsi-023980300', github: GITHUB_URL, demo: DEMO_URL, navassist_demo: 'https://lnkd.in/p/dZPsuj6A', navassist_code: 'https://github.com/ibrandos/navigation-assistant', signtranslate_code: 'https://github.com/ibrandos/Real-time-sign-language-detection' },
     openProject(id, focus) {
       if (!PROJECTS.some(p => p.id === id)) return false;
       const already = currentProject === id && pSheet.classList.contains('open');
